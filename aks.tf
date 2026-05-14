@@ -12,7 +12,7 @@ module "aks" {
   # agents_availability_zones = length(local.azs) > 0 ? local.azs : null
   agents_count          = var.enable_nap ? 1 : null
   agents_max_count      = var.enable_nap ? null : 2
-  agents_max_pods       = 100
+  agents_max_pods       = 60
   agents_min_count      = var.enable_nap ? null : 1
   agents_pool_max_surge = 1
   agents_pool_name      = "agents"
