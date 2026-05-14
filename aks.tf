@@ -14,6 +14,7 @@ module "aks" {
   agents_max_count      = var.enable_nap ? null : 2
   agents_max_pods       = 60
   agents_min_count      = var.enable_nap ? null : 1
+  temporary_name_for_rotation = "tmpagents"
   agents_pool_max_surge = 1
   agents_pool_name      = "agents"
   agents_pool_linux_os_configs = [
