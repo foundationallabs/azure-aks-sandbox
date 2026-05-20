@@ -37,6 +37,12 @@ variable "node_count" {
   description = "The minimum number of nodes in the managed node pool."
 }
 
+variable "node_max_pods" {
+  type        = number
+  default     = 15
+  description = "Maximum pods per node in the managed (default) node pool. Lower this to reduce per-node Azure CNI IP pre-allocation (each node reserves max_pods + 1 IPs from the subnet). Constrained by the subnet size, especially during node pool rotations (vm_size changes) when temp pools double IP demand. Default 15 fits a /24 subnet through a 5-node rotation with headroom."
+}
+
 variable "enable_nap" {
   type        = bool
   default     = false
