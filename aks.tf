@@ -71,4 +71,6 @@ module "aks" {
   }
 
   workload_identity_enabled = var.enable_nap
+
+  depends_on = [azapi_update_resource.clear_subnet_delegations]
 }
