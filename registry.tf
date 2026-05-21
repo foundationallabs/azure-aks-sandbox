@@ -23,7 +23,7 @@ resource "azurerm_private_endpoint" "acr" {
   name                = "${var.nuon_id}-acr-pe"
   location            = data.azurerm_resource_group.rg.location
   resource_group_name = data.azurerm_resource_group.rg.name
-  subnet_id           = data.azurerm_subnet.existing.id
+  subnet_id           = data.azurerm_subnet.private_endpoints.id
 
   private_service_connection {
     name                           = "${var.nuon_id}-acr-psc"
@@ -36,6 +36,8 @@ resource "azurerm_private_endpoint" "acr" {
     name                 = "acr-dns-zone-group"
     private_dns_zone_ids = [azurerm_private_dns_zone.acr.id]
   }
+
+  depends_on = [azapi_update_resource.clear_pe_subnet_delegations]
 }
 
 resource "azurerm_role_assignment" "acr_push_kubelet" {
