@@ -9,9 +9,12 @@ data "azurerm_virtual_network" "existing" {
   resource_group_name = data.azurerm_resource_group.rg.name
 }
 
-// Data source to reference existing subnet for AKS nodes
+// Subnet for AKS nodes. Index [1] (zone2) instead of [0] because some
+// customer environments leave orphan ACI service-association links on zone1
+// (from ARM-template-driven phone-home deployments). Those SALs can only be
+// removed by the Microsoft.ContainerInstance RP, so we sidestep zone1 entirely.
 data "azurerm_subnet" "existing" {
-  name                 = local.private_subnet_name_list[0]
+  name                 = local.private_subnet_name_list[1]
   virtual_network_name = data.azurerm_virtual_network.existing.name
   resource_group_name  = data.azurerm_resource_group.rg.name
 }
@@ -20,7 +23,7 @@ data "azurerm_subnet" "existing" {
 // subnets with any delegation, and AKS subnets accumulate delegations
 // (either from AKS itself or customer Azure Policy), so PEs need their own.
 data "azurerm_subnet" "private_endpoints" {
-  name                 = local.private_subnet_name_list[1]
+  name                 = local.private_subnet_name_list[2]
   virtual_network_name = data.azurerm_virtual_network.existing.name
   resource_group_name  = data.azurerm_resource_group.rg.name
 }
