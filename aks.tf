@@ -57,8 +57,9 @@ module "aks" {
       name                        = "default"
       vm_size                     = var.vm_size
       enable_auto_scaling         = true
-      min_count                   = var.node_count
-      max_count                   = var.node_count
+      node_count                  = var.node_count
+      min_count                   = var.node_min_size
+      max_count                   = var.node_max_size
       max_pods                    = var.node_max_pods
       vnet_subnet_id              = data.azurerm_subnet.existing.id
       create_before_destroy       = true
