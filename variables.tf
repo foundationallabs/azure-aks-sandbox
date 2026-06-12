@@ -8,17 +8,6 @@ variable "location" {
   description = "The location to launch the cluster in"
 }
 
-// NOTE: if you would like to create an internal load balancer, with TLS, you will have to use the public domain.
-variable "internal_root_domain" {
-  type        = string
-  description = "The internal root domain."
-}
-
-variable "public_root_domain" {
-  type        = string
-  description = "The public root domain."
-}
-
 variable "cluster_version" {
   type        = string
   description = "The Kubernetes version to use for the AKS cluster."
@@ -56,10 +45,5 @@ variable "resource_group_name" {
 variable "private_subnet_names" {
   type        = string
   description = "The subnets to deploy private resources into."
-}
-
-variable "public_subnet_names" {
-  type        = string
-  description = "The subnets to deploy public resources into."
 }
 
