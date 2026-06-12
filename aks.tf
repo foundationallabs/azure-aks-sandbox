@@ -4,16 +4,15 @@ module "aks" {
 
   identity_type = "SystemAssigned"
 
-  location                  = var.location
-  prefix                    = var.nuon_id
-  resource_group_name       = data.azurerm_resource_group.rg.name
-  kubernetes_version        = var.cluster_version
-  automatic_channel_upgrade = "patch"
-  # agents_availability_zones = length(local.azs) > 0 ? local.azs : null
-  agents_count                = var.enable_nap ? 1 : null
-  agents_max_count            = var.enable_nap ? null : 2
+  location                    = var.location
+  prefix                      = var.nuon_id
+  resource_group_name         = data.azurerm_resource_group.rg.name
+  kubernetes_version          = var.cluster_version
+  automatic_channel_upgrade   = "patch"
+  agents_count                = null
+  agents_max_count            = 2
   agents_max_pods             = 60
-  agents_min_count            = var.enable_nap ? null : 1
+  agents_min_count            = 1
   temporary_name_for_rotation = "tmpagents"
   agents_pool_max_surge       = 1
   agents_pool_name            = "agents"
@@ -31,7 +30,7 @@ module "aks" {
   ]
   agents_type            = "VirtualMachineScaleSets"
   azure_policy_enabled   = true
-  enable_auto_scaling    = var.enable_nap ? false : true
+  enable_auto_scaling    = true
   enable_host_encryption = false
 
   key_vault_secrets_provider_enabled = true
@@ -40,9 +39,9 @@ module "aks" {
   net_profile_dns_service_ip         = local.dns_service_ip
   net_profile_service_cidr           = local.service_cidr
   network_plugin                     = "azure"
-  network_plugin_mode                = var.enable_nap ? "overlay" : null
-  network_policy                     = var.enable_nap ? "cilium" : "azure"
-  ebpf_data_plane                    = var.enable_nap ? "cilium" : null
+  network_plugin_mode                = null
+  network_policy                     = "azure"
+  ebpf_data_plane                    = null
   os_disk_size_gb                    = 60
   oidc_issuer_enabled                = true
   private_cluster_enabled            = false
@@ -53,7 +52,7 @@ module "aks" {
   sku_tier                           = "Standard"
   vnet_subnet                        = { id = data.azurerm_subnet.existing.id }
 
-  node_pools = var.enable_nap ? {} : {
+  node_pools = {
     "default" = {
       name                        = "default"
       vm_size                     = var.vm_size
@@ -67,7 +66,7 @@ module "aks" {
     }
   }
 
-  workload_identity_enabled = var.enable_nap
+  workload_identity_enabled = false
 
   depends_on = [azapi_update_resource.clear_subnet_delegations]
 }

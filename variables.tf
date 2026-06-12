@@ -43,12 +43,6 @@ variable "node_max_pods" {
   description = "Maximum pods per node in the managed (default) node pool. Lower this to reduce per-node Azure CNI IP pre-allocation (each node reserves max_pods + 1 IPs from the subnet). Constrained by the subnet size, especially during node pool rotations (vm_size changes) when temp pools double IP demand. Default 15 fits a /24 subnet through a 5-node rotation with headroom."
 }
 
-variable "enable_nap" {
-  type        = bool
-  default     = false
-  description = "Enable Node Auto Provisioning (NAP) with Karpenter. Requires Azure CNI Overlay networking. Mutually exclusive with cluster autoscaler on additional node pools."
-}
-
 variable "vnet_name" {
   type        = string
   description = "The name of the existing Virtual Network created by Bicep."
