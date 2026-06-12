@@ -10,9 +10,9 @@ output "vnet" {
 
 output "public_domain" {
   value = {
-    nameservers = azurerm_dns_zone.public.name_servers
-    name        = azurerm_dns_zone.public.name
-    id          = azurerm_dns_zone.public.id
+    nameservers = []
+    name        = ""
+    id          = ""
   }
   description = "A map of public domain attributes: nameservers, name, id."
 }
@@ -20,23 +20,26 @@ output "public_domain" {
 output "internal_domain" {
   value = {
     nameservers = []
-    name        = azurerm_private_dns_zone.internal.name
-    id          = azurerm_private_dns_zone.internal.id
+    name        = ""
+    id          = ""
   }
   description = "A map of internal domain attributes: nameservers, name, id."
 }
 
+# The Pace connector is outbound-only (no ingress), so it never needs a Nuon
+# DNS zone. ctl-api's ProvisionDNS workflow still reads this output, so it is
+# kept and hardcoded to the disabled shape (enabled = false, empty zones).
 output "nuon_dns" {
   value = {
-    enabled = true
+    enabled = false
     public_domain = {
-      zone_id     = azurerm_dns_zone.public.id
-      name        = azurerm_dns_zone.public.name
-      nameservers = tolist(azurerm_dns_zone.public.name_servers)
+      zone_id     = ""
+      name        = ""
+      nameservers = tolist([])
     }
     internal_domain = {
-      zone_id     = azurerm_private_dns_zone.internal.id
-      name        = azurerm_private_dns_zone.internal.name
+      zone_id     = ""
+      name        = ""
       nameservers = tolist([])
     }
     alb_ingress_controller = {
