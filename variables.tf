@@ -23,7 +23,19 @@ variable "vm_size" {
 variable "node_count" {
   type        = number
   default     = 2
-  description = "The minimum number of nodes in the managed node pool."
+  description = "Initial (desired) number of nodes in the managed node pool. Must be within node_min_size..node_max_size. Under autoscaling this is the starting count; the cluster autoscaler then varies it within the min/max bounds."
+}
+
+variable "node_min_size" {
+  type        = number
+  default     = 2
+  description = "Minimum number of nodes the cluster autoscaler may scale the managed node pool down to."
+}
+
+variable "node_max_size" {
+  type        = number
+  default     = 3
+  description = "Maximum number of nodes the cluster autoscaler may scale the managed node pool up to."
 }
 
 variable "node_max_pods" {
