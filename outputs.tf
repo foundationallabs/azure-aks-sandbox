@@ -77,15 +77,6 @@ output "account" {
   description = "A map of Azure account attributes: location, subscription_id, client_id, resource_group_name."
 }
 
-output "acr" {
-  value = {
-    id           = azurerm_container_registry.acr.id
-    name         = azurerm_container_registry.acr.name
-    login_server = azurerm_container_registry.acr.login_server
-  }
-  description = "A map of ACR attributes: id, login_server."
-}
-
 output "cluster" {
   value = {
     "id"                     = module.aks.aks_id

@@ -10,13 +10,13 @@ module "aks" {
   kubernetes_version        = var.cluster_version
   automatic_channel_upgrade = "patch"
   # agents_availability_zones = length(local.azs) > 0 ? local.azs : null
-  agents_count          = var.enable_nap ? 1 : null
-  agents_max_count      = var.enable_nap ? null : 2
-  agents_max_pods       = 60
-  agents_min_count      = var.enable_nap ? null : 1
+  agents_count                = var.enable_nap ? 1 : null
+  agents_max_count            = var.enable_nap ? null : 2
+  agents_max_pods             = 60
+  agents_min_count            = var.enable_nap ? null : 1
   temporary_name_for_rotation = "tmpagents"
-  agents_pool_max_surge = 1
-  agents_pool_name      = "agents"
+  agents_pool_max_surge       = 1
+  agents_pool_name            = "agents"
   agents_pool_linux_os_configs = [
     {
       transparent_huge_page_enabled = "always"
@@ -35,26 +35,23 @@ module "aks" {
   enable_host_encryption = false
 
   key_vault_secrets_provider_enabled = true
-  local_account_disabled            = true
-  log_analytics_workspace_enabled   = false
-  net_profile_dns_service_ip        = local.dns_service_ip
-  net_profile_service_cidr          = local.service_cidr
-  network_plugin                    = "azure"
-  network_plugin_mode               = var.enable_nap ? "overlay" : null
-  network_policy                    = var.enable_nap ? "cilium" : "azure"
-  ebpf_data_plane                   = var.enable_nap ? "cilium" : null
-  os_disk_size_gb                   = 60
-  oidc_issuer_enabled               = true
-  private_cluster_enabled           = false
-  role_based_access_control_enabled = true
-  rbac_aad                          = true
-  rbac_aad_azure_rbac_enabled       = true
-  rbac_aad_tenant_id                = data.azurerm_client_config.current.tenant_id
-  sku_tier                          = "Standard"
-  vnet_subnet                       = { id = data.azurerm_subnet.existing.id }
-  attached_acr_id_map = {
-    "${azurerm_container_registry.acr.name}" = azurerm_container_registry.acr.id
-  }
+  local_account_disabled             = true
+  log_analytics_workspace_enabled    = false
+  net_profile_dns_service_ip         = local.dns_service_ip
+  net_profile_service_cidr           = local.service_cidr
+  network_plugin                     = "azure"
+  network_plugin_mode                = var.enable_nap ? "overlay" : null
+  network_policy                     = var.enable_nap ? "cilium" : "azure"
+  ebpf_data_plane                    = var.enable_nap ? "cilium" : null
+  os_disk_size_gb                    = 60
+  oidc_issuer_enabled                = true
+  private_cluster_enabled            = false
+  role_based_access_control_enabled  = true
+  rbac_aad                           = true
+  rbac_aad_azure_rbac_enabled        = true
+  rbac_aad_tenant_id                 = data.azurerm_client_config.current.tenant_id
+  sku_tier                           = "Standard"
+  vnet_subnet                        = { id = data.azurerm_subnet.existing.id }
 
   node_pools = var.enable_nap ? {} : {
     "default" = {
