@@ -51,6 +51,9 @@ module "aks" {
   rbac_aad_tenant_id                 = data.azurerm_client_config.current.tenant_id
   sku_tier                           = "Standard"
   vnet_subnet                        = { id = data.azurerm_subnet.existing.id }
+  attached_acr_id_map = {
+    "${azurerm_container_registry.acr.name}" = azurerm_container_registry.acr.id
+  }
 
   node_pools = {
     "default" = {
