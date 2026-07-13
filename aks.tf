@@ -40,8 +40,8 @@ module "aks" {
   net_profile_service_cidr           = local.service_cidr
   network_plugin                     = "azure"
   network_plugin_mode                = null
-  network_policy                     = "azure"
-  ebpf_data_plane                    = null
+  network_policy                     = "cilium"
+  network_data_plane                 = "cilium"
   os_disk_size_gb                    = 60
   oidc_issuer_enabled                = true
   private_cluster_enabled            = false
