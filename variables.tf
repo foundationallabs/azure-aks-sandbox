@@ -46,8 +46,8 @@ variable "node_max_pods" {
 
 variable "pod_cidr" {
   type        = string
-  default     = "192.168.0.0/16"
-  description = "Private CIDR pods draw IPs from under CNI overlay. Must not overlap the VNet, peered/on-prem ranges reachable from it, or the service CIDR. Immutable once applied: changing it forces cluster recreation, so confirm the range with the customer before first provision."
+  default     = "100.64.0.0/18"
+  description = "Private CIDR pods draw IPs from under CNI overlay; /18 = 64 node slices, expandable later. Must not overlap the VNet, peered/on-prem ranges reachable from it (check effective routes; note Tailscale uses 100.64.0.0/10), or the service CIDR. Immutable once applied: changing it forces cluster recreation, so verify the range against the customer's reachable routes before first provision."
 }
 
 variable "vnet_name" {
