@@ -41,8 +41,10 @@ module "aks" {
   net_profile_service_cidr           = local.service_cidr
   network_plugin                     = "azure"
   network_plugin_mode                = "overlay"
-  network_policy                     = "azure"
-  ebpf_data_plane                    = null
+  // ebpf_data_plane, not network_data_plane: the module's main_override.tf
+  // wires the cluster's network_data_plane to this legacy var.
+  network_policy                     = "cilium"
+  ebpf_data_plane                    = "cilium"
   os_disk_size_gb                    = 60
   oidc_issuer_enabled                = true
   private_cluster_enabled            = false
