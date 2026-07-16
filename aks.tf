@@ -37,11 +37,14 @@ module "aks" {
   local_account_disabled             = true
   log_analytics_workspace_enabled    = false
   net_profile_dns_service_ip         = local.dns_service_ip
+  net_profile_pod_cidr               = var.pod_cidr
   net_profile_service_cidr           = local.service_cidr
   network_plugin                     = "azure"
-  network_plugin_mode                = null
-  network_policy                     = "azure"
-  ebpf_data_plane                    = null
+  network_plugin_mode                = "overlay"
+  // ebpf_data_plane, not network_data_plane: the module's main_override.tf
+  // wires the cluster's network_data_plane to this legacy var.
+  network_policy                     = "cilium"
+  ebpf_data_plane                    = "cilium"
   os_disk_size_gb                    = 60
   oidc_issuer_enabled                = true
   private_cluster_enabled            = false

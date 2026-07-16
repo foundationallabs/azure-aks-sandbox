@@ -41,7 +41,13 @@ variable "node_max_size" {
 variable "node_max_pods" {
   type        = number
   default     = 15
-  description = "Maximum pods per node in the managed (default) node pool. Lower this to reduce per-node Azure CNI IP pre-allocation (each node reserves max_pods + 1 IPs from the subnet). Constrained by the subnet size, especially during node pool rotations (vm_size changes) when temp pools double IP demand. Default 15 fits a /24 subnet through a 5-node rotation with headroom."
+  description = "Maximum pods per node in the managed (default) node pool (10-250). With CNI overlay, pods draw IPs from pod_cidr instead of the subnet, so this is purely a scheduling density knob; size it against per-pod CPU/memory requests."
+}
+
+variable "pod_cidr" {
+  type        = string
+  default     = "100.64.0.0/18"
+  description = "Private CIDR pods draw IPs from under CNI overlay; /18 = 64 node slices, expandable later. Must not overlap the VNet, peered/on-prem ranges reachable from it (check effective routes; note Tailscale uses 100.64.0.0/10), or the service CIDR. Immutable once applied: changing it forces cluster recreation, so verify the range against the customer's reachable routes before first provision."
 }
 
 variable "vnet_name" {
