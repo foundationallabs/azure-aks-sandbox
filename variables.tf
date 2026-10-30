@@ -65,3 +65,9 @@ variable "private_subnet_names" {
   description = "The subnets to deploy private resources into."
 }
 
+variable "node_pool_subnet_name" {
+  type        = string
+  default     = ""
+  description = "Subnet for the default node pool. Empty uses the cluster subnet."
+}
+
