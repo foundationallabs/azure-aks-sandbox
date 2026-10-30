@@ -19,6 +19,15 @@ data "azurerm_subnet" "existing" {
   resource_group_name  = data.azurerm_resource_group.rg.name
 }
 
+// Older installs created the default node pool on a different subnet than the
+// cluster. A subnet change rotates the pool, so those installs pin it here.
+data "azurerm_subnet" "node_pool" {
+  count                = var.node_pool_subnet_name == "" ? 0 : 1
+  name                 = var.node_pool_subnet_name
+  virtual_network_name = data.azurerm_virtual_network.existing.name
+  resource_group_name  = data.azurerm_resource_group.rg.name
+}
+
 // Separate subnet for private endpoints. Azure disallows private endpoints in
 // subnets with any delegation, and AKS subnets accumulate delegations
 // (either from AKS itself or customer Azure Policy), so PEs need their own.
