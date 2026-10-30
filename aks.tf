@@ -67,7 +67,8 @@ module "aks" {
       min_count                   = var.node_min_size
       max_count                   = var.node_max_size
       max_pods                    = var.node_max_pods
-      vnet_subnet_id              = data.azurerm_subnet.existing.id
+      orchestrator_version        = var.cluster_version
+      vnet_subnet                 = { id = data.azurerm_subnet.existing.id }
       create_before_destroy       = true
       temporary_name_for_rotation = "${substr(var.nuon_id, 1, 7)}temp"
     }
